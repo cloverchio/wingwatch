@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+*.log
+
+# Virtual environment
+venv/
+.env/
+.env.bak/
+.venv/
+
+# Mac system files
+.DS_Store
+
+# Jupyter Notebook checkpoints (if you experiment with notebooks)
+.ipynb_checkpoints/
+
+# Data files
+data/raw/
+data/processed/
+
+# CSVs or Parquet outputs (in case they land elsewhere)
+*.csv
+*.csv.gz
+*.parquet
+
+# Cache or temp files
+*.tmp
+*.bak
+*.swp
+
+# Coverage/testing
+.coverage
+htmlcov/
+.cache/
+pytest_cache/
+
+# MyPy / Pyright / Pylint
+.mypy_cache/
+.pyright/
+.pylint.d/
+
+# PyInstaller
+*.spec
+
+scripts/public.csv
+scripts/public.xlsx

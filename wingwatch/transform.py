@@ -17,19 +17,20 @@ def rename_file(write_dir, file_path):
 
 
 def clean(data: DataFrame) -> DataFrame:
-    cleaned_data = data.copy().dropna()
-    convert_string_columns(cleaned_data)
-    convert_datetime_columns(cleaned_data, 0.9)
-    normalize_column_names(cleaned_data)
-    return cleaned_data
+    return (data.copy()
+            .dropna()
+            .pipe(convert_string_columns)
+            .pipe(convert_datetime_columns, threshold=0.9)
+            .pipe(normalize_column_names))
 
 
-def convert_string_columns(data: DataFrame):
+def convert_string_columns(data: DataFrame) -> DataFrame:
     for column in data.select_dtypes(include="object").columns:
         data[column] = data[column].str.lower()
+    return data
 
 
-def convert_datetime_columns(data: DataFrame, threshold: float):
+def convert_datetime_columns(data: DataFrame, threshold: float) -> DataFrame:
     for column in data.select_dtypes(include=["object", "string"]).columns:
         try:
             converted_column = pd.to_datetime(data[column], errors="coerce", format="%Y-%m-%d")
@@ -38,9 +39,11 @@ def convert_datetime_columns(data: DataFrame, threshold: float):
                 data[column] = converted_column
         except Exception:
             continue
+    return data
 
 
-def normalize_column_names(data: DataFrame):
+def normalize_column_names(data: DataFrame) -> DataFrame:
     for column in data.columns:
         normalized_column_name = column.replace(" ", "_").lower()
         data.rename(columns={column: normalized_column_name}, inplace=True)
+    return data

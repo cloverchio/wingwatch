@@ -1,11 +1,10 @@
-import os
-
 import pandas as pd
 from watchdog.events import (FileCreatedEvent, FileDeletedEvent,
                              FileSystemEventHandler)
 
 import wingwatch.partition as partition
 import wingwatch.transform as transform
+import wingwatch.utils as utils
 
 
 class IngestionHandler(FileSystemEventHandler):
@@ -23,7 +22,7 @@ class IngestionHandler(FileSystemEventHandler):
         partition_files = partition.write_partitions(data, partition_ranges, self.write_dir)
         # check to see if all files have been written before removing...
         if len(partition_ranges) == len(partition_files):
-            os.remove(event.src_path)
+            utils.delete_file(event.src_path)
 
     def on_deleted(self, event: FileDeletedEvent) -> None:
         print("Data file partitioned and removed: {src}".format(src=event.src_path))
@@ -38,8 +37,8 @@ class PartitionHandler(FileSystemEventHandler):
         print("Found partition file to process: {src}".format(src=event.src_path))
         data = pd.read_csv(event.src_path)
         cleaned_data = transform.clean(data)
-        transform.write_processed(cleaned_data, self.write_dir, event.src_path)
-        os.remove(event.src_path)
+        utils.write_file(cleaned_data, self.write_dir, event.src_path)
+        utils.delete_file(event.src_path)
 
     def on_deleted(self, event: FileDeletedEvent) -> None:
         print("Partition file processed and removed: {src}".format(src=event.src_path))

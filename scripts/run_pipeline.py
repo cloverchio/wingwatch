@@ -5,13 +5,10 @@ from watchdog.observers import Observer
 from wingwatch.ingest import IngestionHandler, PartitionHandler
 
 if __name__ == '__main__':
-    columns = ['AIRPORT_ID', 'AIRPORT', 'INCIDENT_DATE',
-               'INCIDENT_MONTH', 'INCIDENT_YEAR', 'TIME', 'TIME_OF_DAY', 'SPECIES']
-    ingestion_handler = IngestionHandler(
-        4, "../data/partitions", columns)
-    partition_handler = PartitionHandler("../data/processed",
-                                         ['AIRPORT_ID', 'AIRPORT', 'INCIDENT_MONTH', 'INCIDENT_YEAR', 'TIME_OF_DAY',
-                                          'SPECIES'], ['INCIDENT_DATE'])
+    columns = ['AIRPORT_ID', 'AIRPORT', 'INCIDENT_DATE', 'INCIDENT_MONTH', 'INCIDENT_YEAR', 'TIME', 'TIME_OF_DAY',
+               'SPECIES']
+    ingestion_handler = IngestionHandler(4, "../data/partitions", columns)
+    partition_handler = PartitionHandler("../data/processed")
     ingestion_observer = Observer()
     partition_observer = Observer()
     partition_observer.schedule(

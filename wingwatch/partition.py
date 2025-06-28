@@ -22,8 +22,7 @@ def find_partition_ranges(data_size, partition_count):
     partition_ranges = []
     starting_offset = 0
     for i in range(partition_count):
-        ending_offset = starting_offset + \
-                        partition_size + (1 if i < remainder else 0)
+        ending_offset = starting_offset + partition_size + (1 if i < remainder else 0)
         partition_ranges.append((starting_offset, ending_offset))
         starting_offset = ending_offset
     return partition_ranges

@@ -26,23 +26,20 @@ class IngestionHandler(FileSystemEventHandler):
             os.remove(event.src_path)
 
     def on_deleted(self, event: FileDeletedEvent) -> None:
-        print("Data file partitioned and removed: {src}".format(
-            src=event.src_path))
+        print("Data file partitioned and removed: {src}".format(src=event.src_path))
 
 
 class PartitionHandler(FileSystemEventHandler):
 
-    def __init__(self, write_dir, str_columns, date_columns):
+    def __init__(self, write_dir):
         self.write_dir = write_dir
-        self.str_columns = str_columns
-        self.date_columns = date_columns
 
     def on_created(self, event: FileCreatedEvent) -> None:
         print("Found partition file to process: {src}".format(src=event.src_path))
         data = pd.read_csv(event.src_path)
-        cleaned_data = transform.clean(data, self.str_columns, self.date_columns)
+        cleaned_data = transform.clean(data)
         transform.write_processed(cleaned_data, self.write_dir, event.src_path)
+        os.remove(event.src_path)
 
     def on_deleted(self, event: FileDeletedEvent) -> None:
-        print("Partition file processed and removed: {src}".format(
-            src=event.src_path))
+        print("Partition file processed and removed: {src}".format(src=event.src_path))

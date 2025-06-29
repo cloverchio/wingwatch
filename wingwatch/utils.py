@@ -1,12 +1,17 @@
 import os
 
+import pandas as pd
 from pandas import DataFrame
 
 
+def read_file(current_file: str) -> DataFrame:
+    return pd.read_csv(current_file)
+
+
 def write_file(data: DataFrame, write_dir: str, current_file: str, file_type='processed'):
-    processed_file = rename_file(write_dir, current_file)
-    print("Writing {type} file: {file}".format(type=file_type, file=processed_file))
-    data.to_csv(processed_file, index=False)
+    new_file = rename_file(write_dir, current_file)
+    print("Writing {type} file: {file}".format(type=file_type, file=new_file))
+    data.to_csv(new_file, index=False)
 
 
 def delete_file(current_file: str, file_type='processed'):

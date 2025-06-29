@@ -2,6 +2,7 @@ from pandas import DataFrame
 
 
 def groupby(data: DataFrame, columns: list, index_name=None) -> DataFrame:
+    columns = [column.lower() for column in columns]
     return data.groupby(columns).size().reset_index(name=index_name)
 
 

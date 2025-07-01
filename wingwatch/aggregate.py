@@ -1,4 +1,10 @@
+import pandas as pd
 from pandas import DataFrame
+
+
+def reduce(partition_data: list, columns: list, index_name=None) -> DataFrame:
+    merged = pd.concat(partition_data, ignore_index=True)
+    return groupby(merged, columns, index_name)
 
 
 def groupby(data: DataFrame, columns: list, index_name=None) -> DataFrame:

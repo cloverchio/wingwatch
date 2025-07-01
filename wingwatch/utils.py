@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 import pandas as pd
 from pandas import DataFrame
@@ -6,6 +7,11 @@ from pandas import DataFrame
 
 def read_file(current_file: str) -> DataFrame:
     return pd.read_csv(current_file)
+
+
+def read_all_files(read_dir: str) -> list:
+    files = Path(read_dir).glob("*.csv")
+    return [pd.read_csv(file) for file in files]
 
 
 def write_file(data: DataFrame, write_dir: str, current_file: str, file_type='processed'):
